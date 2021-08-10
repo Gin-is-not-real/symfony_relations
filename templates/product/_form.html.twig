@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <a href="{{ path('category_new') }}">Add new category</a>
+    <a href="{{ path('receipt_new') }}">Add new receipt</a>
+
+    <div><button class="btn">{{ button_label|default('Save') }}</button></div>
+{{ form_end(form) }}
