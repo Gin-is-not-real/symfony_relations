@@ -12,6 +12,7 @@
                 <th>Name</th>
                 <th>Category</th>
                 <th>Receipt</th>
+                <th>Image</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +23,20 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.category }}</td>
                 <td>{{ product.receipt }}</td>
+
+                <td>
+                    {# <label for="img-select">Choisir un fichier</label>
+                    <select name="img-select" id="img-select">
+                        {% for img in product.image %}
+                            <option value="{{ img }}" >{{ img }}</option>
+                        {% endfor %}
+                    </select>  #}
+                    <ul>
+                        {% for img in product.image %}
+                            <li>{{ img }}</li>
+                        {% endfor %}
+                    </ul> 
+                </td>
 
                 <td>
                     <a href="{{ path('product_show', {'id': product.id}) }}">show</a>

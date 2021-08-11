@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Image;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +36,24 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //on recupere les images transmises
+            $images = $form->get('image')->getData();
+
+            //on boucle sur les images
+            foreach($images as $image) {
+                //on genere un nouveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                //on copie le fichier dans le dossier upload
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                // On crée l'image dans la base de données
+                $img = new Image();
+                $img->setName($fichier);
+                $product->addImage($img);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
@@ -42,10 +61,10 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('product/new.html.twig', [
-            'product' => $product,
-            'form' => $form,
-        ]);
+        // return $this->renderForm('product/new.html.twig', [
+        //     'product' => $product,
+        //     'form' => $form,
+        // ]);
     }
 
     /**

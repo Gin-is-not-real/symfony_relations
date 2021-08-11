@@ -23,6 +23,14 @@
                 <th>Receipt</th>
                 <td>{{ product.receipt }}</td>
             </tr>
+            <tr>
+                <th>Image</th>
+                <ul>
+                    {% for img in product.image %}
+                        <li>{{ img }}</li>
+                    {% endfor %}
+                </ul> 
+            </tr>
         </tbody>
     </table>
 

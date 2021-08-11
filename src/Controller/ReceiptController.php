@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Receipt;
 use App\Form\ReceiptType;
 use App\Repository\ReceiptRepository;
+use mysqli;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +48,28 @@ class ReceiptController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * @Route("/up", name="receipt_up", methods={"GET","POST"})
+     */
+    public function up(string $path, Request $request): Response {
+        $receipt = new Receipt();
+        $receipt->setPath($path);
+
+        $form = $this->createForm(ReceiptType::class, $receipt);
+        if ($request->isMethod('POST')) {
+            
+        $form->submit($request->request->get($form->getName()));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return new Response('Saved new product with id '.$receipt->getId());
+        }
+    }
+        // return $this->redirectToRoute('receipt_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+
 
     /**
      * @Route("/{id}", name="receipt_show", methods={"GET"})

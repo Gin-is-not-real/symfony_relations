@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Upload Receipt{% endblock %}
+
+{% block body %}
+
+  {% if message is defined %}
+    <div>{{ message }}</div>
+  {% endif %}
+
+  {% if file is defined %}
+    {{ file }}
+  {% endif %}
+
+<form action="{{ path('upload_receipt') }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="token" value="{{ csrf_token('upload') }}" />
+        <div>
+            <label for="myfile">File to upload:</label>
+            <input type="file" name="myfile" id="myfile">
+        </div>
+        <button type="submit">Send</button>
+</form>
+{% endblock %}
+
